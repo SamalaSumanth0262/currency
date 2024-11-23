@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: conversion-service
+        uri: http://localhost:8081/api/v1
+        predicates:
+         - Path=api/v1/convert/**
+      - id: rate-service
+        uri: http://localhost:8082/api/v1
+        predicates:
+          - Path=api/v1/rate/**
