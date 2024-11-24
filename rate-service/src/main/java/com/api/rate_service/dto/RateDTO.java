@@ -1,7 +1,6 @@
 package com.api.rate_service.dto;
 
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 @Component
 public class RateDTO {
