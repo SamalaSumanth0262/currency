@@ -17,19 +17,18 @@ public class ExternalRateClient implements IExternalRateClient {
   @Override
   public Mono<RateResponseDTO> getRates() {
     WebClient openExchangeRateClient = WebClient
-      .builder()
-      .baseUrl(baseUrl)
-      .build();
+        .builder()
+        .baseUrl(baseUrl)
+        .build();
 
     return openExchangeRateClient
-      .get()
-      .uri(uriBuilder ->
-        uriBuilder.queryParam("app_id", openExchangeRateApiSecret).build()
-      )
-      .retrieve()
-      .bodyToMono(RateResponseDTO.class)
-      .onErrorResume(error -> {
-        return Mono.empty();
-      });
+        .get()
+        .uri(uriBuilder -> uriBuilder.queryParam("app_id", openExchangeRateApiSecret).build())
+        .retrieve()
+        .bodyToMono(RateResponseDTO.class)
+        .onErrorResume(error -> {
+          return Mono.empty();
+        });
   }
+
 }
