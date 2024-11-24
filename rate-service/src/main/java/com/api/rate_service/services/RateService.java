@@ -2,7 +2,6 @@ package com.api.rate_service.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.api.rate_service.clients.ExternalRateClient;
 import com.api.rate_service.dto.RateResponseDTO;
