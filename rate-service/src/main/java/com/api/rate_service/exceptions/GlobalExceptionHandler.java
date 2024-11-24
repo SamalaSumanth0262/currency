@@ -14,5 +14,4 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Object> handleGenericError(Exception ex) {
     return ResponseHandler.generateRespons(HttpStatus.BAD_REQUEST, "Bad request for the api", ex.getMessage());
   }
-
 }

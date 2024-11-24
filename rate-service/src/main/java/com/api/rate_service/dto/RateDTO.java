@@ -1,6 +1,11 @@
 package com.api.rate_service.dto;
 
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+
+@Component
 public class RateDTO {
+
   private String sourceCurrency;
   private String targetCurrency;
   private Double exchangeRate;
@@ -28,5 +33,4 @@ public class RateDTO {
   public void setExchangeRate(Double exchangeRate) {
     this.exchangeRate = exchangeRate;
   }
-
 }

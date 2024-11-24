@@ -9,7 +9,7 @@ public class ResponseHandler {
   private ResponseHandler() {
   }
 
-  public static ResponseEntity<Object> generateRespons(HttpStatus httpStatus, String message, Object data) {
+  public static ResponseEntity<Object> generateResponse(HttpStatus httpStatus, String message, Object data) {
     HashMap<String, Object> response = new HashMap<>();
     response.put("status", httpStatus);
     response.put("message", message);
