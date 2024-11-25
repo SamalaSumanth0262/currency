@@ -11,6 +11,6 @@ spring:
       - id: rate-service
         uri: http://localhost:8082
         predicates:
-          - Path=/api/v1/gateway/rate
+          - Path=/api/v1/gateway/rates
         filters:
         - RewritePath=/api/v1/gateway/(?<action>.*),/api/v1/${action}
