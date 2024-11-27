@@ -1,0 +1,34 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-RateServiceApplication<rate-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.api.rate_service.RateServiceApplication",
+      "projectName": "rate-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ConversionGatewayApplication<conversion-gateway>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "api.conversion_gateway.ConversionGatewayApplication",
+      "projectName": "conversion-gateway",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-CurrencyConversionApplication<currency-conversion>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.currency_conversion.CurrencyConversionApplication",
+      "projectName": "currency-conversion",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
