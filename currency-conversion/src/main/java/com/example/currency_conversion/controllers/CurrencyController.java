@@ -19,7 +19,7 @@ public class CurrencyController {
   @PostMapping("/api/v1/convert")
   public ResponseEntity<Object> convert(@RequestBody ConvertDTO convertDTO) throws Exception {
     try {
-      return ResponseHandler.generateResponse(HttpStatus.OK, "convereted", currencyService.convertOrder(convertDTO));
+      return ResponseHandler.generateResponse(HttpStatus.OK, "converted", currencyService.convertOrder(convertDTO));
     } catch (Exception err) {
       return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, "Oops this wasnt suppose to happen",
           err.getMessage());
