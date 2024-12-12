@@ -20,29 +20,23 @@ public class CurrencyService implements ICurrencyService {
 
   public ConvertDTO convertOrder(ConvertDTO convertDTO) throws Exception {
     Double targetAmount = convertDTO.getSourceAmount() * fetchRate(convertDTO);
-    System.out.println("targetAmount: " + targetAmount);
 
     convertDTO.setTargetAmount(targetAmount);
     return convertDTO;
   }
 
   public Double fetchRate(ConvertDTO convertDTO) throws Exception {
-    try {
-      new Exception("Something went wrong in here");
-      Map<String, Double> cachedRatesBySource = rateCacheService.getRatesBySource(
-          convertDTO.getSourceCurrency());
+    Map<String, Double> cachedRatesBySource = rateCacheService.getRatesBySource(
+        convertDTO.getSourceCurrency());
 
-      if (cachedRatesBySource == null) {
-        Mono<RateServiceResponseDTO> fetchedRates = rateServiceClient.fetchRates();
-        Map<String, Double> rates = fetchedRates.block().getData().getRates();
-        rateCacheService.saveRates(convertDTO.getSourceCurrency(), rates);
+    if (cachedRatesBySource == null) {
+      Mono<RateServiceResponseDTO> fetchedRates = rateServiceClient.fetchRates();
+      Map<String, Double> rates = fetchedRates.block().getData().getRates();
+      rateCacheService.saveRates(convertDTO.getSourceCurrency(), rates);
 
-        return rates.get(convertDTO.getTargetCurrency());
-      } else {
-        return cachedRatesBySource.get(convertDTO.getTargetCurrency());
-      }
-    } catch (Exception er) {
-      throw new RuntimeException("Failed to fetch rates: " + er.getMessage());
+      return rates.get(convertDTO.getTargetCurrency());
+    } else {
+      return cachedRatesBySource.get(convertDTO.getTargetCurrency());
     }
   }
 }

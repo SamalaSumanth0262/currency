@@ -1,4 +1,4 @@
-package com.example.services;
+package com.example.currency_conversion.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
