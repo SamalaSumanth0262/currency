@@ -6,10 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,46 +31,55 @@ class UserServiceTest {
   @Mock
   UserRepository userRepository;
 
-  public List<User> listAllUsers() {
+  private User user;
+  private UserDTO userDTO;
+  private List<User> userList;
 
-    User user1 = new User();
-    user1.setEmail("example@gmail.com");
-    user1.setName("example");
+  @BeforeEach
+  void setUp() {
+    user = new User();
+    user.setEmail("example@gmail.com");
+    user.setName("example");
+    user.setId(123L);
+
+    userDTO = new UserDTO();
+    userDTO.setEmail(user.getEmail());
+    userDTO.setName(user.getName());
+
+    // Create a sample list of users
+    userList = new ArrayList<>();
+    userList.add(user);
 
     User user2 = new User();
-    user2.setEmail("Example2@gamil.com");
+    user2.setEmail("example2@gmail.com");
     user2.setName("example 2");
-
-    return new ArrayList<User>(Arrays.asList(user1, user2));
+    userList.add(user2);
   }
 
   @Test
   void shouldReturnAllUsers() {
-
-    when(userRepository.findAll()).thenReturn(listAllUsers());
+    when(userRepository.findAll()).thenReturn(userList);
 
     List<User> users = userService.getAllUsers();
 
-    assertEquals(listAllUsers(), users);
+    assertEquals(userList, users);
+    assertEquals(2, users.size());
+    assertEquals("example@gmail.com", users.get(0).getEmail());
   }
 
   @Test
   void shouldReturnUserByCreating() {
-    User user = listAllUsers().get(0);
-    when(userService.createUser(any(User.class))).thenReturn(user);
+    User firstUser = userList.get(0);
+    when(userService.createUser(any(User.class))).thenReturn(firstUser);
 
-    User createdUser = userService.createUser(user);
+    User createdUser = userService.createUser(firstUser);
 
     assertEquals(user, createdUser);
+    assertEquals("example@gmail.com", user.getEmail());
   }
 
   @Test
   void shouldUpdateUserSuccess() throws Exception {
-    User user = listAllUsers().get(0);
-    UserDTO userDTO = new UserDTO();
-    userDTO.setEmail(user.getEmail());
-    userDTO.setName(user.getName());
-
     Long Id = (long) 123;
 
     when(userRepository.findById(Id)).thenReturn(Optional.ofNullable(user));
@@ -83,24 +92,16 @@ class UserServiceTest {
 
   @Test
   void shouldHandleUserNotFoundException() {
-    User user = listAllUsers().get(0);
-    Long Id = (long) 123;
-    UserDTO userDTO = new UserDTO();
-    userDTO.setEmail(user.getEmail());
-    userDTO.setName(user.getName());
+    when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-    when(userRepository.findById(Id)).thenReturn(Optional.empty());
-
-    assertThrows(UserNotFoundException.class, () -> userService.updateUser(Id, userDTO));
+    assertThrows(UserNotFoundException.class, () -> userService.updateUser(user.getId(), userDTO));
   }
 
   @Test
   void shouldReturnUserSuccess() throws Exception {
-    Long Id = (long) 123;
-    User user = listAllUsers().get(0);
-    when(userRepository.findById(Id)).thenReturn(Optional.of(user));
+    when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-    User expectedUser = userService.findUser(Id);
+    User expectedUser = userService.findUser(user.getId());
 
     assertEquals(expectedUser, user);
 
@@ -108,10 +109,9 @@ class UserServiceTest {
 
   @Test
   void shouldHandleUserNotFoundExceptionWhenFetchingTheUser() {
-    Long Id = (long) 123;
-    when(userRepository.findById(Id)).thenReturn(Optional.empty());
+    when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
 
-    assertThrows(UserNotFoundException.class, () -> userService.findUser(Id));
+    assertThrows(UserNotFoundException.class, () -> userService.findUser(user.getId()));
   }
 
 }
