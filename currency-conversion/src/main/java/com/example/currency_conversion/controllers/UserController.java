@@ -1,7 +1,11 @@
 package com.example.currency_conversion.controllers;
 
+import com.example.currency_conversion.dto.UserDTO;
+import com.example.currency_conversion.entities.User;
+import com.example.currency_conversion.exceptions.UserNotFoundException;
+import com.example.currency_conversion.services.UserService;
+import com.example.currency_conversion.utils.ResponseHandler;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.currency_conversion.dto.UserDTO;
-import com.example.currency_conversion.entities.User;
-import com.example.currency_conversion.exceptions.UserNotFoundException;
-import com.example.currency_conversion.services.UserService;
-import com.example.currency_conversion.utils.ResponseHandler;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -29,12 +27,20 @@ public class UserController {
 
   @GetMapping
   public ResponseEntity<Object> getAllUsers() {
-    List<User> users = userService.getAllUsers();
+    try {
+      List<User> users = userService.getAllUsers();
 
-    return ResponseHandler.generateResponse(
-        HttpStatus.OK,
-        "All users fetched successfully",
-        users);
+      return ResponseHandler.generateResponse(
+          HttpStatus.OK,
+          "All users fetched successfully",
+          users);
+    } catch (Exception e) {
+      return ResponseHandler.generateResponse(
+          HttpStatus.BAD_REQUEST,
+          e.getMessage(),
+          null);
+    }
+
   }
 
   @PostMapping
@@ -42,7 +48,7 @@ public class UserController {
     try {
       User user = new User();
       user.setEmail(userDTO.getEmail());
-      user.setName(userDTO.getEmail());
+      user.setName(userDTO.getName());
       return ResponseHandler.generateResponse(
           HttpStatus.OK,
           "User Saved Succesfully",
@@ -62,7 +68,7 @@ public class UserController {
     try {
       return ResponseHandler.generateResponse(
           HttpStatus.OK,
-          "Update Successfully",
+          "Updated Successfully",
           userService.updateUser(id, userDTO));
     } catch (Exception e) {
       return ResponseHandler.generateResponse(
@@ -81,9 +87,15 @@ public class UserController {
   public ResponseEntity<Object> fetchUser(@PathVariable Long id) {
     try {
       User user = userService.findUser(id);
-      return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully Fetched User", user);
+      return ResponseHandler.generateResponse(
+          HttpStatus.OK,
+          "Successfully Fetched User",
+          user);
     } catch (UserNotFoundException e) {
-      return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY, "User not found", e.getMessage());
+      return ResponseHandler.generateResponse(
+          HttpStatus.BAD_REQUEST,
+          "User not found",
+          e.getMessage());
     }
   }
 }
