@@ -1,14 +1,15 @@
 package com.example.currency_conversion.services;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.currency_conversion.dto.UserDTO;
 import com.example.currency_conversion.entities.User;
 import com.example.currency_conversion.exceptions.UserNotFoundException;
 import com.example.currency_conversion.interfaces.IUserService;
 import com.example.currency_conversion.repository.UserRepository;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements IUserService {

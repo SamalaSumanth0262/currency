@@ -1,4 +1,4 @@
-package com.example.currency_conversion.contoller;
+package com.example.currency_conversion.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
